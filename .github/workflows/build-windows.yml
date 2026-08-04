@@ -1,0 +1,33 @@
+name: Build Windows Installer
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 依存パッケージのインストール
+        run: npm install
+
+      - name: 画面（React）のビルド
+        run: npm run build
+
+      - name: Windowsインストーラーの作成
+        run: npx electron-builder --win nsis --publish never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: インストーラーを保存
+        uses: actions/upload-artifact@v4
+        with:
+          name: AIサポートブラウザPro-Setup
+          path: release/*.exe

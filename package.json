@@ -1,0 +1,51 @@
+{
+  "name": "ai-support-browser-pro",
+  "productName": "AIサポートブラウザ Pro",
+  "version": "1.0.0",
+  "description": "誰でも安心して使えるWindows11専用AIブラウザ",
+  "author": "DayDream Plus",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "dev:electron": "cross-env NODE_ENV=development electron .",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "dist": "npm run build && electron-builder --win nsis --publish never"
+  },
+  "dependencies": {
+    "electron-updater": "6.3.9"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "autoprefixer": "10.4.20",
+    "cross-env": "7.0.3",
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8",
+    "postcss": "8.4.49",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  },
+  "build": {
+    "appId": "jp.daydreamplus.aisupportbrowser",
+    "productName": "AIサポートブラウザPro",
+    "directories": { "output": "release" },
+    "files": ["dist/**/*", "electron/**/*", "package.json"],
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "artifactName": "AIサポートブラウザPro-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AIサポートブラウザPro"
+    }
+  }
+}

@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   AIサポートブラウザ Pro — デザイントークン
+   基調：藍(あい)と生成り。UDフォント(BIZ UDPGothic)前提。
+   ============================================================ */
+
+:root {
+  /* 文字サイズの基準。設定画面から 100% / 125% / 150% / 175% に変更する */
+  font-size: 16px;
+
+  --c-base: #f4f6f9;
+  --c-panel: #ffffff;
+  --c-ink: #10192a;
+  --c-subink: #4a5768;
+  --c-line: #d3dae4;
+  --c-ai: #1b3a6b;      /* 藍 */
+  --c-ai-dim: #e6edf8;
+  --c-go: #1f7a4d;      /* 進む・安全 */
+  --c-warn: #b26a00;    /* 注意 */
+  --c-danger: #b3261e;  /* 危険 */
+  --c-focus: #ff8a00;   /* キーボード操作の位置 */
+}
+
+html[data-theme='dark'] {
+  --c-base: #0f1622;
+  --c-panel: #182236;
+  --c-ink: #eef3fb;
+  --c-subink: #a8b6c9;
+  --c-line: #2b3a52;
+  --c-ai: #7fb0ff;
+  --c-ai-dim: #1d2b45;
+  --c-go: #4cc38a;
+  --c-warn: #f0b429;
+  --c-danger: #ff6b60;
+  --c-focus: #ffb020;
+}
+
+/* 高コントラスト（弱視・まぶしさに配慮した黒地＋黄） */
+html[data-theme='contrast'] {
+  --c-base: #000000;
+  --c-panel: #000000;
+  --c-ink: #ffffff;
+  --c-subink: #ffe600;
+  --c-line: #ffffff;
+  --c-ai: #ffe600;
+  --c-ai-dim: #202020;
+  --c-go: #00ff90;
+  --c-warn: #ffe600;
+  --c-danger: #ff5b5b;
+  --c-focus: #00e5ff;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--c-base);
+  color: var(--c-ink);
+  font-family: 'BIZ UDPGothic', 'BIZ UDGothic', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* キーボード操作の現在地をはっきり見せる */
+:focus-visible {
+  outline: 4px solid var(--c-focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* 動きを減らす設定を尊重する */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ふりがな */
+ruby rt { font-size: 0.5em; color: var(--c-subink); }
+html[data-furigana='off'] ruby rt { display: none; }
+
+/* かんたんモード：情報量を減らし、余白と文字を大きく */
+html[data-easy='on'] .pro-only { display: none !important; }
+
+@layer components {
+  .card {
+    @apply rounded-2xl border p-6;
+    background: var(--c-panel);
+    border-color: var(--c-line);
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-3 rounded-2xl border px-6 py-4 text-lg font-bold transition;
+    background: var(--c-panel);
+    border-color: var(--c-line);
+    color: var(--c-ink);
+    min-height: 3.5rem;
+  }
+  .btn:hover { background: var(--c-ai-dim); }
+  .btn-primary {
+    background: var(--c-ai);
+    border-color: var(--c-ai);
+    color: var(--c-panel);
+  }
+  html[data-theme='contrast'] .btn-primary { color: #000; }
+  .btn-primary:hover { filter: brightness(1.08); background: var(--c-ai); }
+  .label { @apply text-base font-bold; color: var(--c-subink); }
+}
+
+/* スクロールバーを太く（マウス操作が苦手な方向け） */
+::-webkit-scrollbar { width: 16px; height: 16px; }
+::-webkit-scrollbar-thumb {
+  background: var(--c-line);
+  border-radius: 8px;
+  border: 4px solid var(--c-base);
+}

@@ -1,0 +1,24 @@
+# 次にやること（Phase 2 以降の設計メモ）
+
+## Phase 2 — 生活支援モジュール
+- メモ：ローカル保存（IndexedDB）→ Firestore 同期。音声入力（Web Speech API）。
+- くすり：時間・名前・写真。飲んだ記録。通知は Electron の Notification を使う。
+- 病院・カレンダー：予定を1つのデータ構造（`ScheduleItem`）で共通化する。
+- そうだん：連絡先カード（家族・支援者）。ワンタッチで `openExternal('tel:…')`。
+
+## Phase 3 — データ同期と更新
+- Firebase Authentication（メール＋パスワード）。家族グループ単位でデータを分離。
+- Firestore ルールは「同じ家族グループの人だけ読める」を最小権限で書く。
+- electron-updater ＋ GitHub Releases。起動時に確認 → 背景でダウンロード →
+  「更新しますか？」を大きな文字で聞く。
+- JSON エクスポート／インポート（バックアップ）。
+
+## Phase 4 — AI統合
+- 要約・翻訳・やさしい日本語への書きかえ。
+- APIキーは Windows Credential Manager（`keytar` 相当）に保存し、
+  レンダラーには絶対に渡さない。メインプロセス経由でのみ呼び出す。
+
+## 気をつけること
+- Tailwind は「実際に出力された CSS」を毎回 grep で確認する（生成漏れ対策）。
+- 画面を増やすときは `navItems.ts` に1行足すだけで済む構造を崩さない。
+- かんたんモードで隠す要素には `pro-only` クラスを付ける。
