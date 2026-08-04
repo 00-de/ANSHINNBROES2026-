@@ -1,17 +1,22 @@
 name: Build Windows Installer
 
+# 「main でも master でも、どのブランチに push しても動く」設定にしています。
+# さらに Actions 画面の [Run workflow] ボタンからも手動で実行できます。
 on:
   push:
-    tags: ['v*']
+    branches: ['**']
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: ソースコードを取り出す
+        uses: actions/checkout@v4
+
+      - name: Node.js を用意する
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -26,8 +31,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: インストーラーを保存
+      - name: インストーラーを保存する
         uses: actions/upload-artifact@v4
         with:
           name: AIサポートブラウザPro-Setup
           path: release/*.exe
+          if-no-files-found: error
