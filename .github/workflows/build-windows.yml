@@ -1,11 +1,16 @@
 name: Build Windows Installer
 
-# 「main でも master でも、どのブランチに push しても動く」設定にしています。
-# さらに Actions 画面の [Run workflow] ボタンからも手動で実行できます。
+# ・どのブランチに push しても「試しビルド」を行う（配布はしない）
+# ・v1.0.1 のようにタグを付けたときは、その Release に .exe と latest.yml を貼り付ける
+#   （手動で作った Release でも、あとから確実に貼り付く方式にしている）
 on:
   push:
     branches: ['**']
+    tags: ['v*']
   workflow_dispatch:
+
+permissions:
+  contents: write   # Release にファイルを貼り付けるために必要
 
 jobs:
   build:
@@ -26,14 +31,33 @@ jobs:
       - name: 画面（React）のビルド
         run: npm run build
 
+      # --publish never でも、package.json に publish 設定があるので
+      # 自動更新に必要な latest.yml は release フォルダに作られる
       - name: Windowsインストーラーの作成
         run: npx electron-builder --win nsis --publish never
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: できたファイルの一覧を表示（確認用）
+        shell: bash
+        run: ls -lh release || true
 
       - name: インストーラーを保存する
         uses: actions/upload-artifact@v4
         with:
           name: AIサポートブラウザPro-Setup
-          path: release/*.exe
+          path: |
+            release/*.exe
+            release/latest.yml
           if-no-files-found: error
+
+      - name: Release に貼り付ける（タグを付けたときだけ）
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            release/*.exe
+            release/*.exe.blockmap
+            release/latest.yml
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
