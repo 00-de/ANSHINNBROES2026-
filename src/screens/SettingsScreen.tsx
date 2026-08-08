@@ -68,6 +68,28 @@ export default function SettingsScreen() {
       </Row>
 
       <div className="card">
+        <h2 className="text-xl font-bold">アプリの更新</h2>
+        <p className="mt-1 text-base" style={{ color: 'var(--c-subink)' }}>
+          ふだんは自動で確認します。すぐ確かめたいときだけ押してください。
+        </p>
+        <button type="button" className="btn mt-4" onClick={() => window.desktop?.checkUpdate()}>
+          いま更新を確認する
+        </button>
+      </div>
+
+      <div className="card">
+        <h2 className="text-xl font-bold">こまったときは</h2>
+        <ul className="mb-4 mt-1 text-base" style={{ color: 'var(--c-subink)' }}>
+          <li>Ctrl + Alt + X … ページが画面をふさいだときに閉じる（非常口）</li>
+          <li>Ctrl + Alt + D … 開発ツールを開く</li>
+          <li>Ctrl + Alt + L … 不具合の記録をメモ帳で開く</li>
+        </ul>
+        <button type="button" className="btn" onClick={() => window.desktop?.openLog()}>
+          不具合の記録を開く
+        </button>
+      </div>
+
+      <div className="card">
         <h2 className="text-xl font-bold">設定を最初の状態にもどす</h2>
         <p className="mt-1 text-base" style={{ color: 'var(--c-subink)' }}>
           文字の大きさや色が元にもどります。メモやお気に入りは消えません。

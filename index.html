@@ -3,8 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      内蔵ブラウザ（webview）は外部サイトを表示するため、
+      frame-src / child-src で https を許可する必要がある。
+      アプリ自身のスクリプトは 'self' のみに限定したまま。
+    -->
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;" />
+          content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-src https:; child-src https:;" />
     <title>AIサポートブラウザ Pro</title>
   </head>
   <body>

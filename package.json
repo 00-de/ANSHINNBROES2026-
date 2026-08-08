@@ -1,7 +1,7 @@
 {
   "name": "ai-support-browser-pro",
   "productName": "AIサポートブラウザ Pro",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "誰でも安心して使えるWindows11専用AIブラウザ",
   "author": "DayDream Plus",
   "private": true,
@@ -34,10 +34,23 @@
   "build": {
     "appId": "jp.daydreamplus.aisupportbrowser",
     "productName": "AIサポートブラウザPro",
-    "directories": { "output": "release" },
-    "files": ["dist/**/*", "electron/**/*", "package.json"],
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
     "win": {
-      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "artifactName": "AIサポートブラウザPro-Setup-${version}.${ext}"
     },
     "nsis": {
@@ -46,6 +59,14 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "AIサポートブラウザPro"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "00-de",
+        "repo": "ANSHINNBROES2026-",
+        "releaseType": "release"
+      }
+    ]
   }
 }

@@ -14,6 +14,11 @@ export default function BreakReminder() {
   }, [settings.breakMinutes])
 
   useEffect(() => {
+    if (show) window.desktop?.viewHide()
+    else window.dispatchEvent(new Event('aisb:view-refresh'))
+  }, [show])
+
+  useEffect(() => {
     if (show) speak('少し休みましょう。目を閉じて、水を飲んでください。')
   }, [show, speak])
 

@@ -3,6 +3,8 @@ import TitleBar from './components/TitleBar'
 import Sidebar from './components/Sidebar'
 import ScreenFrame from './components/ScreenFrame'
 import BreakReminder from './components/BreakReminder'
+import ErrorBoundary from './components/ErrorBoundary'
+import UpdateNotice from './components/UpdateNotice'
 import HomeScreen from './screens/HomeScreen'
 import BrowserScreen from './screens/BrowserScreen'
 import AIScreen from './screens/AIScreen'
@@ -73,7 +75,9 @@ export default function App() {
                   🏠 ホームにもどる
                 </button>
               </div>
-              <div className="min-h-0 flex-1">{body()}</div>
+              <div className="min-h-0 flex-1">
+                <ErrorBoundary key={screen}>{body()}</ErrorBoundary>
+              </div>
             </div>
           ) : (
             <ScreenFrame
@@ -82,11 +86,12 @@ export default function App() {
               hint={meta.hint}
               onHome={screen === 'home' ? undefined : () => setScreen('home')}
             >
-              {body()}
+              <ErrorBoundary key={screen}>{body()}</ErrorBoundary>
             </ScreenFrame>
           )}
         </main>
       </div>
+      <UpdateNotice />
       {settings.breakMinutes > 0 && <BreakReminder />}
     </div>
   )
