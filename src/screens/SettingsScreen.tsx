@@ -1,4 +1,6 @@
+import { useRef, useState } from 'react'
 import { useSettings } from '../context/SettingsContext'
+import { exportAll, importAll } from '../lib/db'
 import type { FontScale, ThemeName } from '../types'
 
 const THEMES: { id: ThemeName; label: string; note: string }[] = [
@@ -11,6 +13,23 @@ const SCALES: FontScale[] = [100, 125, 150, 175]
 
 export default function SettingsScreen() {
   const { settings, update, reset } = useSettings()
+  const fileRef = useRef<HTMLInputElement | null>(null)
+  const [message, setMessage] = useState('')
+
+  const saveBackup = () => {
+    const blob = new Blob([exportAll()], { type: 'application/json' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = `AIサポートブラウザ_バックアップ_${new Date().toISOString().slice(0, 10)}.json`
+    a.click()
+    URL.revokeObjectURL(a.href)
+    setMessage('バックアップを保存しました。')
+  }
+
+  const loadBackup = async (file: File) => {
+    const result = importAll(await file.text())
+    setMessage(result.message)
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
@@ -75,6 +94,20 @@ export default function SettingsScreen() {
         <button type="button" className="btn mt-4" onClick={() => window.desktop?.checkUpdate()}>
           いま更新を確認する
         </button>
+      </div>
+
+      <div className="card">
+        <h2 className="text-xl font-bold">データの控えをとる</h2>
+        <p className="mb-4 mt-1 text-base" style={{ color: 'var(--c-subink)' }}>
+          メモ・お薬・予定・連絡さきを1つのファイルに保存できます。パソコンを買いかえるときに使います。
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <button type="button" className="btn" onClick={saveBackup}>💾 控えを保存する</button>
+          <button type="button" className="btn" onClick={() => fileRef.current?.click()}>📂 控えから戻す</button>
+          <input ref={fileRef} type="file" accept="application/json,.json" className="hidden"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) loadBackup(f); e.target.value = '' }} />
+        </div>
+        {message && <p className="mt-3 text-lg" style={{ color: 'var(--c-go)' }}>{message}</p>}
       </div>
 
       <div className="card">

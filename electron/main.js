@@ -118,7 +118,8 @@ ipcMain.handle('window:toggleMaximize', () => {
 ipcMain.handle('window:close', () => mainWindow && mainWindow.close())
 ipcMain.handle('app:version', () => app.getVersion())
 ipcMain.handle('app:openExternal', (_e, url) => {
-  if (typeof url === 'string' && /^https?:\/\//.test(url)) return shell.openExternal(url)
+  // ホームページのほか、電話とメールも開けるようにする
+  if (typeof url === 'string' && /^(https?:\/\/|tel:|mailto:)/.test(url)) return shell.openExternal(url)
   return false
 })
 

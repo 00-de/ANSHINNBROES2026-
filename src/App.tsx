@@ -11,6 +11,11 @@ import AIScreen from './screens/AIScreen'
 import SettingsScreen from './screens/SettingsScreen'
 import HelpScreen from './screens/HelpScreen'
 import PlaceholderScreen from './screens/PlaceholderScreen'
+import MemoScreen from './screens/MemoScreen'
+import MedicineScreen from './screens/MedicineScreen'
+import HospitalScreen from './screens/HospitalScreen'
+import CalendarScreen from './screens/CalendarScreen'
+import ConsultScreen from './screens/ConsultScreen'
 import { NAV_ITEMS } from './data/navItems'
 import { useSettings } from './context/SettingsContext'
 import type { ScreenId } from './types'
@@ -52,6 +57,11 @@ export default function App() {
       case 'ai': return <AIScreen />
       case 'settings': return <SettingsScreen />
       case 'help': return <HelpScreen />
+      case 'memo': return <MemoScreen />
+      case 'medicine': return <MedicineScreen />
+      case 'hospital': return <HospitalScreen />
+      case 'calendar': return <CalendarScreen />
+      case 'consult': return <ConsultScreen />
       default:
         return <PlaceholderScreen icon={meta.icon} title={meta.label} plan={PLANS[screen] ?? []} />
     }
